@@ -98,10 +98,10 @@ for k, C_val in enumerate(C, 1):
 
 
 # # Create the plot
-# plt.figure(figsize=(10, 8))
-# plt.plot(x, y1, label='Stage I: 3x₁ + 5x₂ = 3900')
-# plt.plot(x, y2, label='Stage II: x₁ + 3x₂ = 2100')
-# plt.plot(x, y3, label='Stage III: 2x₁ + 2x₂ = 2200')
+plt.figure(figsize=(10, 8))
+plt.plot(x, y1, label='Stage I: 3x₁ + 5x₂ = 3900')
+plt.plot(x, y2, label='Stage II: x₁ + 3x₂ = 2100')
+plt.plot(x, y3, label='Stage III: 2x₁ + 2x₂ = 2200')
 
 # # Set axis limits
 # plt.xlim(0, 1200)
@@ -117,4 +117,4 @@ for k, C_val in enumerate(C, 1):
 # plt.legend()
 
 # Show the plot
-# plt.show()
+plt.show()
