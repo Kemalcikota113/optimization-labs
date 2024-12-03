@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull, convex_hull_plot_2d
+from scipy.optimize import linprog
+
 
 # Decision variables:
 # x1 = number of type A TVs to produce
@@ -115,3 +117,27 @@ plt.plot(x, y3, label='Stage III: 2x₁ + 2x₂ = 2200')
 
 # Show the plot
 plt.show()
+
+
+
+# -----------------------------------
+# Linear Programming Optimization (task vi and vii)
+
+# Objective function coefficients (profit, negate for maximization)
+c_minimize = -c  # Negate the coefficients to turn max into min
+
+# Solve the linear program
+result = linprog(c_minimize, A_ub=A, b_ub=b, bounds=(0, None), method='highs')
+
+# Extract the results
+if result.success:
+    max_profit = -result.fun  # Negate back to get the maximum profit
+    optimal_solution = result.x
+    print("Optimization successful!")
+    print(f"Maximum profit: {max_profit:,.2f}")
+    print(f"Optimal production levels: Type A TVs = {optimal_solution[0]:.2f}, Type B TVs = {optimal_solution[1]:.2f}")
+else:
+    print("Optimization failed!")
+    print(result.message)
+
+
