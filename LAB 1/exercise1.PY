@@ -56,7 +56,7 @@ max_val = float('-inf')
 best_vertex = None
 
 for v in vertices:
-    z = c[0]*v[0] + c[1]*v[1]
+    z = c @ v  # crazy that this works
     print(f"At point ({v[0]}, {v[1]}): z = {z:,}")
     if z > max_val:
         max_val = z
@@ -67,16 +67,7 @@ print(
     f"Maximum occurs at ({best_vertex[0]}, {best_vertex[1]}) with value: {max_val:,}")
 
 
-C = np.array([
-    1 * 10**5,
-    2 * 10**5,
-    3 * 10**5,
-    4 * 10**5,
-    5 * 10**5,
-    6 * 10**5,
-    7 * 10**5,
-    8 * 10**5,
-])
+C = np.array([1e5, 2e5, 3e5, 4e5, 5e5, 6e5, 7e5, 8e5])
 
 
 def calcLevelCurve(x, C):
@@ -91,10 +82,13 @@ for simplex in hull.simplices:
     plt.plot(vertices[simplex, 0], vertices[simplex, 1], 'k-')
 
 
-# Below AI generated code, dont really understand it
 for k, C_val in enumerate(C, 1):
-    y = calcLevelCurve(x, C_val)
-    plt.plot(x, y, 'r', alpha=k/8, label=f'z = {C_val:,.0f}')
+    y = (C_val - c[0]*x) / c[1]  # Calculate x2 based on the level curve equation
+    z_max = 1140000
+    y_max = (z_max - c[0]*x) / c[1]
+    plt.plot(x, y_max, 'g--', label='Max z = 1,140,000') # support line
+
+    plt.plot(x, y, 'r', alpha=k/8, label=f'z = {C_val:,.0f}') # level curves --> code from lab
 
 
 # # Create the plot
@@ -115,6 +109,9 @@ plt.plot(x, y3, label='Stage III: 2x₁ + 2x₂ = 2200')
 # # Add grid and legend
 # plt.grid(True)
 # plt.legend()
+
+
+
 
 # Show the plot
 plt.show()
