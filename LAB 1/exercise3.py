@@ -62,3 +62,22 @@ for i, stage in enumerate(["Stage I", "Stage II", "Stage III"]):
 # -----------------------------------
 
 
+# Shadow prices
+y1, y2, y3 = dual_variables  # From previous dual solution
+
+# Current profit per unit for Type B TVs
+current_c2 = 1000
+
+# Compute new c2 value based on shadow prices
+new_c2 = 5 * y1 + 3 * y2 + 2 * y3
+
+# Calculate required price increase
+price_increase = new_c2 - current_c2
+
+print(f"New price per unit for Type B TVs: {new_c2:.2f}")
+print(f"Required price increase: {price_increase:.2f}")
+
+# answer to iv) ---> because the current price is already 1000, no increase is required.
+
+# -----------------------------------
+
