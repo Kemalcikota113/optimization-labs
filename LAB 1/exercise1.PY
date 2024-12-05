@@ -43,11 +43,11 @@ y3 = (b[2] - A[2, 0]*x) / A[2, 1]  # Stage III
 
 # Values given by observing the graph
 vertices = np.array([
-    [0, 1100],
+    [1100, 0],
     [300, 600],
-    [600, 500],
+    [0, 700],
     [800, 300],
-    [1200, 300],
+    [0, 0],
 ])
 
 
