@@ -75,9 +75,47 @@ new_c2 = 5 * y1 + 3 * y2 + 2 * y3
 price_increase = new_c2 - current_c2
 
 print(f"New price per unit for Type B TVs: {new_c2:.2f}")
-print(f"Required price increase: {price_increase:.2f}")
+print(f"Required price increase: {price_increase:.2f}\n\n")
 
 # answer to iv) ---> because the current price is already 1000, no increase is required.
+
+# -----------------------------------
+
+# Add Type C TV
+profit_C = 1350
+stage_times_C = [7, 4, 2]
+
+# Compute reduced cost for Type C
+reduced_cost_C = profit_C - (stage_times_C[0] * y1 + stage_times_C[1] * y2 + stage_times_C[2] * y3)
+print(f"Reduced cost for Type C TV: {reduced_cost_C:.2f}")
+
+# Decision: Should Type C TV be produced?
+if reduced_cost_C < 0:
+    print("Type C TV should be produced.")
+    # Update the primal problem
+    c_primal = np.array([-700, -1000, -1350])  # Negate for maximization to minimization
+    A_primal = np.array([
+        [3, 5, 7],    # Stage I hours per unit
+        [1, 3, 4],    # Stage II hours per unit
+        [2, 2, 2]     # Stage III hours per unit
+    ])
+    b_primal = np.array([3900, 2100, 2200])  # Original constraints
+
+    # Solve the updated primal problem
+    result_primal = linprog(c_primal, A_ub=A_primal, b_ub=b_primal, bounds=(0, None), method='highs')
+    if result_primal.success:
+        new_profit = -result_primal.fun  # Negate back to maximize
+        production_plan = result_primal.x
+        print(f"New optimum profit: {new_profit:,.2f}")
+        print(f"New production plan: Type A = {production_plan[0]:.2f}, Type B = {production_plan[1]:.2f}, Type C = {production_plan[2]:.2f}")
+    else:
+        print("Re-optimization failed!")
+else:
+    print("Type C TV should NOT be produced.")
+
+# answer to v) ---->
+# the reduced cost is 50 which means that type C's profit 50 is higher than the contribution needed to maintain feasbility.
+# a positive reduced cost for a max problem means that including this new variable would NOT increase the optimal profit.
 
 # -----------------------------------
 
