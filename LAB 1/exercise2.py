@@ -55,6 +55,7 @@ def run_experiment_simplex(n):
     return np.mean(elapsed_times)
 
 """
+
 results = {}
 for n in [10, 20, 50, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200]:  # Adjust values as needed
     avg_time = run_experiment_simplex(n)

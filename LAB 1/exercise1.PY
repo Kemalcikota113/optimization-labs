@@ -9,7 +9,7 @@ from scipy.optimize import linprog
 # x2 = number of type B TVs to produce
 
 # Objective function coefficients (profits)
-c = np.array([700, 1000])  # profit per unit for type A and B
+c = np.array([700, 1167])  # profit per unit for type A and B
 
 # Constraint coefficients matrix A
 # Row 1: Stage I time constraints (3(x1) + 5(x2) <= 3900)
@@ -31,6 +31,41 @@ print("\nConstraint coefficients (A):")
 print(A)
 print("\nRight-hand side values (b):")
 print(b)
+
+#"""
+# Binary search for the value of c[1] (profit for Type B TVs)
+low = 1150
+high = 1175
+tolerance = 0  # Precision for stopping condition
+previous_vertex = None
+
+while high - low > tolerance:
+    c[1] = (low + high) / 2  # Midpoint of the range
+
+    # Solve the linear program with the current c[1]
+    c_minimize = -c  # Negate for maximization
+    result = linprog(c_minimize, A_ub=A, b_ub=b, bounds=(0, None), method='highs')
+
+    if result.success:
+        # Extract the optimal vertex
+        current_vertex = tuple(result.x.round(0)) 
+        if previous_vertex and current_vertex != previous_vertex:
+            # Vertex change detected
+            break
+        else:
+            previous_vertex = current_vertex
+
+        # Adjust the search range based on the current vertex
+        if current_vertex == (800, 300):  # Current optimal vertex
+            low = c[1]  # Increase the lower bound
+        else:
+            high = c[1]  # Decrease the upper bound
+
+# Output the result
+print(f"The optimal solution changes when c[1] (profit for Type B TVs) reaches approximately: {c[1]}")
+print(f"New optimal solution: {current_vertex}")
+#"""
+
 
 # Lines space provided by Lab instructions
 x = np.linspace(0, 1200, 100)
@@ -63,10 +98,13 @@ for v in vertices:
     if z > max_val:
         max_val = z
         best_vertex = v
+    
+    
 
 print("-" * 50)
 print(
     f"Maximum occurs at ({best_vertex[0]}, {best_vertex[1]}) with value: {max_val:,}")
+
 
 
 C = np.array([1e5, 2e5, 3e5, 4e5, 5e5, 6e5, 7e5, 8e5])
@@ -86,9 +124,6 @@ for simplex in hull.simplices:
 
 for k, C_val in enumerate(C, 1):
     y = (C_val - c[0]*x) / c[1]  # Calculate x2 based on the level curve equation
-    z_max = 1140000
-    y_max = (z_max - c[0]*x) / c[1]
-    plt.plot(x, y_max, 'g--', label='Max z = 1,140,000') # support line
 
     plt.plot(x, y, 'r', alpha=k/8, label=f'z = {C_val:,.0f}') # level curves --> code from lab
 
