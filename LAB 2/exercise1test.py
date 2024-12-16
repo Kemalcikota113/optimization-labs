@@ -2,26 +2,31 @@ import numpy as np
 from scipy.optimize import linprog
 import warnings
 
-costs = [18, 24, 62, 29 , 31, 46, 51, 42, 20]
-capacity = [1000, 1000, 1000 ,1000, 500, 1000, 2000, 500, 2000]
+# Cost vector (in the order of variables defined above)
+costs = [18, 24, 62, 29, 31, 46, 51, 42, 20]
+
+# Capacity constraints for each arc
+capacity = [1000, 1000, 1000, 1000, 500, 1000, 2000, 500, 2000]
+
+# Number of variables (arcs)
 num_vars = len(costs)
-A_eq = np.zeros((5, num_vars)) # 5x9 matrix
 
-supply = [2500, 1000]
-demand = [1000, 500, 2000]
+# We have 7 nodes: Almhult, Markaryd, Liatorp, Osby, Ljungby, Alvesta, Växjö
+# So we need a 7x9 matrix for A_eq
+A_eq = np.zeros((7, num_vars))
 
-balancesheet = [2500, 1000, -1000, -500,  -2000]
+# Define indices for clarity:
+A_L = 0  # Almhult→Liatorp
+A_O = 1  # Almhult→Osby
+A_V = 2  # Almhult→Växjö
+O_M = 3  # Osby→Markaryd
+L_J = 4  # Liatorp→Ljungby
+L_V = 5  # Liatorp→Växjö
+M_J = 6  # Markaryd→Ljungby
+J_Av = 7 # Ljungby→Alvesta
+Av_V = 8 # Alvesta→Växjö
 
-
-A_L = 0 # Almhult to Liatorp
-A_O = 1 # Almhult to Osby
-A_V = 2 # Almhult to Vaxjo
-O_M = 3 # Osby to Markaryd
-L_J = 4 # Liatorp to Ljungby
-L_V = 5
-M_J = 6
-J_Av = 7 # Ljungby to Alvesta
-Av_V = 8
+# Node constraints:
 
 # Almhult (supply=2500): outflow - inflow = 2500
 # Outflow: A_L, A_O, A_V; no inflow
