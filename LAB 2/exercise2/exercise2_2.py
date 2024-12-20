@@ -84,3 +84,4 @@ print("Final point:", final_x)
 print("Final f value:", final_f)
 print("Optimal f value:", f_star)
 print("Absolute error with respect to optimal f value:", error)
+

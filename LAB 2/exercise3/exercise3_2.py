@@ -120,4 +120,6 @@ plt.xlim(-2, 2)
 plt.ylim(-1, 3)
 plt.legend()
 
+#print(ps)
+
 plt.show()
